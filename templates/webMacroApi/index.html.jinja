@@ -1,0 +1,45 @@
+{% extends "base.html.jinja" %}
+{% block head %}
+    {{ super() }}
+{% endblock %}
+
+{% block content_left %}
+{% endblock %}
+
+{% block content_right %}
+    <div class="content">
+        <h3 class="text-primary py-3">Macros API registradas</h3>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                <th scope="col"><span>Nome</span></th>
+                <th scope="col"><span>Título</span></th>
+                <th scope="col"><span>Descrição</span></th>
+                <th scope="col"><span></span></th>
+                </tr>
+            </thead>
+            <tbody>
+                {%for macro in lista_macros%}
+                    <tr>
+                        <td><span>{{macro['name']}}</span></td>
+                        <td><span>{{macro['title']}}</span></td>
+                        <td><span>{{macro['desc']}}</span></td>
+                        <form method="GET" action="{{macro['route']}}">
+                            <input type="hidden" name="readme" value="{{macro['readme']}}" />
+                            <input type="hidden" name="filepath" value="{{macro['filepath']}}" />
+                            <td><button class="btn btn-ligth"><i class="fa-solid fa-circle-info text-primary"></i></button></td>
+                        </form>
+                    </tr>
+                {%endfor%}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="{{url_for('static', filename='css/webMacroApi/index.css')}}">
+{% endblock %}
+
+{% block js %}
+    <script src="{{url_for('static', filename='js/index.js')}}"></script>
+{% endblock %}

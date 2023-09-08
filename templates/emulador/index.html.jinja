@@ -1,0 +1,174 @@
+{% extends "base.html.jinja" %}
+{% block head %}
+    {{ super() }}
+{% endblock %}
+
+{% block content_left %}
+{% endblock %}
+
+{% block content_right %}
+    <div class="container">
+        <div class='barra-ferramentas'>
+            <div>
+                <label for="macros-ativas">Macros Ativas:
+                    <select id="macros-ativas" onchange="recuperaMacroNovo(event)">
+                        <option value="" disabled>Macros Em execução</option>
+                    </select>
+                </label>
+                <button id="btn-btnRefreshMacro" onclick="refreshMacrosExecucao()" title="Atualiza macros em execução"><i class="fa-solid fa-arrows-rotate"></i></i></button>
+                {# <button id="btn-btnViewRecuperaMacro" onclick="recuperaMacro()" title="Visualiza Status da Macro" disabled><i class="fa-solid fa-eye text-blue"></i></i></button> #}
+                <input type="hidden" id="recupera-macro-id" />
+            </div>
+            <div>
+                <label for="iniciar-macro">Iniciar Macro:
+                    <select id="iniciar-macro" onchange="selecionaNovaMacro(event)">
+                        <option value="">Macro Registradas</option>
+                        {% for macro in macrosRegistradas%}
+                            <option value="{{ macro }}" required>{{ macro }}</option>
+                        {% endfor %}
+                    </select>
+                </label>
+            </div>
+            <div class="botoes">
+                <button id="btn-info" onclick="showMacroInfo()" disabled><i class="fa-solid fa-circle-info text-primary"></i></button>
+                <button id="btn-play" onclick="playMacro()" disabled><i class="fa-solid fa-play text-success"></i></button>
+                <button id="btn-pause" onclick="pauseMacro()" disabled><i class="fa-solid fa-pause text-dark"></i></button>
+                <button id="btn-stop" onclick="stopMacro()" disabled><i class="fa-solid fa-stop text-danger"></i></button>
+                <button id="btn-reqInfo" onclick="showPropriedades()" title="Propriedades" disabled><i class="fa-brands fa-product-hunt text-info"></i></button>
+                <button id="btn-erase" onclick="limpaTela()" title="'Limpa tela"><i class="fa-solid fa-eraser"></i></button>
+                {# <button id="btn-erase" onclick="pegaPropriedades()" title="'Recupera Requisição"><i class="fa-solid fa-check"></i></button> #}
+            </div>
+
+            <div>
+                <input type="text" id="txtUser" value="{{user}}" class="txtReqId" disabled/>
+            </div>
+
+            <div>
+                <input type="text" id="txtReqId" value="" class="txtReqId d-none" disabled/>
+            </div>
+
+            <div id="spinner-status" class="d-none">
+                <div id="sipnner-cursor" class="spinner-grow text-success progress-size" role="status">
+                    <span class="sr-only progress-size">Loading...</span>
+                </div>
+            </div>
+            <input type="hidden" id="dominio" value='{{ dominio }}' />
+            <input type="hidden" id="currentMacroName" />
+            <input type="hidden" id="currentStatus" />
+            <input type="hidden" id="lastMessageIndex" value="-1" />
+        </div>
+
+        <div class="screen">
+            <div id="frameInfo" class="frameInfo">
+                <div class="frame-info-div-close">
+                    <button class="btn btn-light" id="closeInfo" onclick="hideMacroInfo()"><i class="fa-regular fa-rectangle-xmark"></i></button>
+                </div>
+                <div id="frame-info-div-content" class="frame-info-div-content">
+                    Teste de conteúdo
+                </div>
+            </div>
+            <div id="framePropriedades" class="frameInfo">
+                <div class="frame-info-div-close">
+                    <button class="btn btn-light" id="closeInfo" onclick="hidePropriedades()"><i class="fa-regular fa-rectangle-xmark"></i></button>
+                </div>
+                <div id="frame-historico-div-content" class="frame-info-div-content">
+                    <div id='frame-propriedades'>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Propriedade</th>
+                                    <th>Valor</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Status:</td>
+                                    <td id="prop-status"></td>
+                                </tr>
+                                <tr>
+                                    <td>ID:</td>
+                                    <td id="prop-id"></td>
+                                </tr>
+                                <tr>
+                                    <td>Nome Automação:</td>
+                                    <td id="prop-Nome"></td>
+                                </tr>
+                                <tr>
+                                    <td>Proprietário:</td>
+                                    <td id="prop-proprietario"></td>
+                                </tr>
+                                <tr>
+                                    <td>Hora Início:</td>
+                                    <td id="prop-inicio"></td>
+                                </tr>
+                                <tr>
+                                    <td>Último usuário:</td>
+                                    <td id="prop-last-user"></td>
+                                </tr>
+                                <tr>
+                                    <td>Está Pausada:</td>
+                                    <td id="prop-pausada"></td>
+                                </tr>
+                                <tr>
+                                    <td>Pedido de Cancelamento:</td>
+                                    <td id="prop-cancelamento"></td>
+                                </tr>
+                                <tr>
+                                    <td>Índice da última mensagem:</td>
+                                    <td id="prop-iUltimaMsg"></td>
+                                </tr>
+                                <tr>
+                                    <td>Esperando resposta de input:</td>
+                                    <td id="prop-input"></td>
+                                </tr>
+                                <tr>
+                                    <td>Esperando resposta de password:</td>
+                                    <td id="prop-password"></td>
+                                </tr>
+                                <tr>
+                                    <td>Esperando resposta de select:</td>
+                                    <td id="prop-select"></td>
+                                </tr>
+                                <tr>
+                                    <td>Esperando resposta de Excel:</td>
+                                    <td id="prop-excel"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div id="telaEmulador" class="emulador"></div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="{{url_for('static', filename='css/emulador/index.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/emulador/progress.css')}}">
+{% endblock %}
+
+{% block js %}
+    <script src="{{url_for('static', filename='js/emulador/index.js')}}"></script>
+    
+{% endblock %}
+
+{# <!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CEPAT - Servidor de Macros</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+</head>
+<body>
+    <h1 class="text-info">Servidor de Macros - CEPAT</h1>
+    <p>Teste de hot reload</p>
+    <p>Tudo dando certo!</p>
+    <p class="text-primary">Continua tudo ok!</p>
+    <p>Ainda tem hot reload?</p>
+    <p>Diz que sim!</p>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+</body>
+</html> #}

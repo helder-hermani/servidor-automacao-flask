@@ -1,0 +1,16 @@
+{% extends "base.html.jinja" %}
+{% block head %}
+    {{ super() }}
+{% endblock %}
+{% block content %}
+    <h1 class="text-success">A macro foi finalizada com sucesso!</h1>
+{% endblock %}
+
+
+{% block css %}
+    <link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}">
+{% endblock %}
+
+{% block js %}
+    
+{% endblock %}

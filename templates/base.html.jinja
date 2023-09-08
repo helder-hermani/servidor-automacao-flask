@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    {% block head %}
+    <link rel="icon" type="image/png" href="{{url_for('static',filename='assets/img/cef-icon.ico')}}">
+    {# <link rel="icon" type="image/png" href="{{url_for('static',filename='app/assets/img/cef-icon.ico')}}"> #}
+    <title>Servidor de Automação - CEPAT</title>
+        {# <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> #}
+        {# <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous"> #}
+        <script src="{{url_for('static', filename='app/js/jQuery/jquery-3.6.0.min.js')}}"></script>
+        <link rel="stylesheet" href="{{url_for('static', filename='app/bootstrap/bootstrap.min.css')}}">
+        {# <link rel="stylesheet" href="{{url_for('static', filename='app/css/bootstrap/bootstrap.min.css')}}"> #}
+        {# <link rel="stylesheet" href="{{url_for('static', filename='app/css/template.css')}}"> #}
+        <link rel="stylesheet" href="{{url_for('static', filename='css/base.css')}}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='app/fontawesome-free-6.4.0-web/css/all.min.css') }}">
+    {% endblock %}
+    {% block css %}{% endblock %}
+</head>
+<body>
+    <div id="content" class="app-template-content">
+        <header class="app-header">
+            <img src="{{url_for('static',filename='assets/img/logo-caixa.png')}}" class="logo-caixa" alt="Imagem de fundo">
+            {# <img src="{{url_for('static',filename='app/assets/img/logo-caixa.png')}}" class="logo-caixa" alt="Imagem de fundo"> #}
+        </header>
+        <section class="app-section">
+            <menu class="app-menu">
+                <ul>
+                    <li><a href="/" class="text-link">Início</a></li>
+                    <li><a href="#" class="text-link">Framework</a></li>
+                    <li><a href="#" class="text-link">CLI</a></li>
+                    <li><a href="/web/macrosapi" class="text-link">Macros Api</a></li>
+                    <li><a href="/emulador" class="text-link">Automação</a></li>
+                </ul>
+            </menu>
+            <div class="app-section-grid-content">
+                <div class="app-section-left">
+                    <div class="smooth-frame">
+                        <div class="content">
+                            <div class="frame-user">
+                                <p class="p-label">Login de Acesso:</p>
+                                <form class="form-login" action="/dologin" method="post">
+                                    <div class="form-field">
+                                        <span class="input-group-text login-icon">
+                                            <i class="fa-solid fa-user"></i>
+                                        </span>
+                                        <input class="login-field" type="text" name="user" id="user" placeholder="{{ '*******' if session['token'] is defined and session['token'] != None else 'c000000' }}" required {{ 'disabled' if session['token'] is defined and session['token'] != None else None }} />
+                                    </div>
+                                    <div class="form-field">
+                                        <span class="input-group-text login-icon">
+                                            <i class="fa-solid fa-key"></i>
+                                        </span>
+                                        <input class="login-field" type="password" name="password" id="password" required {{ 'disabled' if session['token'] is defined and session['token'] != None else None }} placeholder="{{ '*******' if session['token'] is defined and session['token'] != None else 'Senha' }}" required {{ 'disabled' if session['token'] is defined and session['token'] != None else None }}/>
+                                    </div>
+                                    <div class="form-field" style="margin-top: 1rem;">
+                                        <input class='btn-submit' {{ 'disabled' if session['token'] is defined and session['token'] != None else None }} type="submit" value="Entrar" />
+                                    </div>
+                                </form>
+                                {# <form class="form-login" action="/api/dologin" method="post"> #}
+                                {# <div><button onclick="doLogin(event)">Entrar</button></div> #}
+                            </div>
+                            <div>
+                                {% if (session['token'] is defined and session['token'] != None) %}
+                                    <div class="frame-user my-2">
+                                        <div class="user-profile-header">
+                                            <div class="div-avatar" style="background-image: url('{{session['avatar_url']}}');"></div>
+                                            <p class="user-nome">Helder Hermani Almeida e Sousa</p>
+                                        </div>
+                                        <div class="grid-dados-usuario">
+                                            <p>Matrícula:</p>
+                                            <p>c084604</p>
+                                            <p>Função:</p>
+                                            <p>ASSISTENTE JUNIOR</p>
+                                            <p>Unidade:</p>
+                                            <p>CN PATRIMONIO E BENS DE TERCEIROS</p>
+                                        </div>
+                                        <div class="div-sair">
+                                            <a href="/logout" class="p-sair">Sair</a>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% block content_left %}{% endblock %}
+                    </div>
+                </div>
+                <div class="app-section-right">
+                    <div class="smooth-frame">
+                        {% block content_right %}{% endblock %}
+                    </div>
+                </div>
+            </div>
+        </section>
+        <footer class="app-footer">
+        </footer>
+    </div>
+    {# <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script> #}
+    <script src="{{url_for('static',filename='app/js/bootstrap/bootstrap.bundle.min.js')}}"></script>
+    <script src="{{url_for('static',filename='js/app.js')}}"></script>
+    {# <script src="{{url_for('static',filename='app/js/app.js')}}"></script> #}
+    {% block js %}
+    {% endblock %}
+</body>
+</html>

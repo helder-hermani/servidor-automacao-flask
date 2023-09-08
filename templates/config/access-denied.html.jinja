@@ -1,0 +1,60 @@
+{% extends "base.html.jinja" %}
+{% block head %}
+    {{ super() }}
+{% endblock %}
+
+{% block content_left %}
+{% endblock %}
+
+{% block content_right %}
+    <div class="main">
+        {# <img src="{{url_for('static', filename='assets/img/access-denied.png')}}" alt="Acesso Negado"> #}
+        {# <p><i class="fa-solid fa-triangle-exclamation"></i>  Acesso negado.</p> #}
+    </div>
+{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="{{url_for('static', filename='css/access-denied.css')}}">
+{% endblock %}
+
+{% block js %}
+    <script src="{{url_for('static', filename='js/index.js')}}"></script>
+    <script>
+        function ok(){
+            alert('Deu tudo certo!')
+        }
+        function fail(){
+            alert('Deu tudo errado!')
+        }
+
+        function doLogin(event){
+            event.preventDefault()
+            user = document.getElementById('user').value
+            password = document.getElementById('password').value
+            
+            data = {user:user,password:password}
+
+            makeAjax('/api/dologin','POST',data=data,ok,fail)
+        }    
+    </script>
+{% endblock %}
+
+{# <!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CEPAT - Servidor de Macros</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+</head>
+<body>
+    <h1 class="text-info">Servidor de Macros - CEPAT</h1>
+    <p>Teste de hot reload</p>
+    <p>Tudo dando certo!</p>
+    <p class="text-primary">Continua tudo ok!</p>
+    <p>Ainda tem hot reload?</p>
+    <p>Diz que sim!</p>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+</body>
+</html> #}
