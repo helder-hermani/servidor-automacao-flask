@@ -13,3 +13,4 @@ python -m pip install flask -i http://binario.caixa:8081/repository/pypi-repo/si
     python -m pip install Flask-Bootstrap -i http://binario.caixa:8081/repository/pypi-repo/simple --trusted-host binario.caixa
     python -m pip install Flask-FontAwesome -i http://binario.caixa:8081/repository/pypi-repo/simple --trusted-host binario.caixa
     python -m pip install python-dotenv -i http://binario.caixa:8081/repository/pypi-repo/simple --trusted-host binario.caixa
+    python -m pip install beautifulsoup4 -i http://binario.caixa:8081/repository/pypi-repo/simple --trusted-host binario.caixa

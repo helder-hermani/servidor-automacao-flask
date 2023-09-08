@@ -5,8 +5,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;    
-    background-image: url('/static/assets/img/access-denied.png');
-    /* background-image: url('/static/app/assets/background/17973908.jpg'); */
+    /* background-image: url('/static/assets/img/access-denied.png'); */
     background-size: cover;
     background-position: center;
 }

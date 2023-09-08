@@ -4,6 +4,7 @@ from time import sleep
 from datetime import datetime
 from flask import jsonify
 import pandas as pd
+from bs4 import BeautifulSoup
 
 active_tracks = []
 
@@ -38,6 +39,7 @@ class Tracker:
     def end(self, track_id, msg='Sem registro'):
         current_track = list(filter(lambda obj: obj['id'] == track_id, active_tracks))
         self.savelog(current_track[0],msg)
+        self.saveHistory(current_track[0])
         active_tracks.remove(current_track[0])
 
 
@@ -64,7 +66,7 @@ class Tracker:
 
             current_time = datetime.now().strftime('%d/%m/%Y %H:%M:%S')
             objReq = objReq[0]
-            objReq['outputs'].append(f'<span style="color: rgba(255,255,255,.2); margin-right: .5rem; font-size: .8rem;">{current_time}</span><span class="{textClass}">{msg}</span>')
+            objReq['outputs'].append(f'<span style="color: rgba(255,255,255,.2); margin-right: .5rem; font-size: .8rem;">{current_time} </span><span class="{textClass}">{msg}</span>')
         else:
             return None
         
@@ -82,7 +84,7 @@ class Tracker:
                 }
 
                 counter = 0
-                while (req['question']['answer'] == None):
+                while (req['question'] != None and req['question']['answer'] == None):
                     print('Aguardando resposta - método input')
                     counter += 1
                     if (counter >= self.maxWait):
@@ -107,7 +109,7 @@ class Tracker:
                 }
 
                 counter = 0
-                while (req['inputPassword']['answer'] == None):
+                while (req['inputPassword'] != None and req['inputPassword']['answer'] == None):
                     print('Aguardando resposta - input password')
                     counter += 1
                     if (counter >= self.maxWait):
@@ -133,7 +135,7 @@ class Tracker:
                 }
 
                 counter = 0
-                while (req['select']['answer'] == None):
+                while (req['select'] != None and req['select']['answer'] == None):
                     print('Aguardando resposta - answer')
                     counter += 1
                     if (counter >= self.maxWait):
@@ -162,7 +164,7 @@ class Tracker:
                 }
 
                 counter = 0
-                while (req['dataframe']['hasAnswer'] == None):
+                while (req['dataframe'] != None and req['dataframe']['hasAnswer'] == None):
                     print('Aguardando resposta - arquivo')
                     counter += 1
                     if (counter >= self.maxWait):
@@ -189,6 +191,16 @@ class Tracker:
         print(f'{id};{name};{owner};{msg};{moment}\n')
         with open(caminho_arquivo,'a',encoding='utf-8') as log:
             log.write(f'{id};{name};{owner};{lastuser};{msg};{moment}\n')
+
+    def saveHistory(self, req):
+        id = req['id']
+        caminho_arquivo = f'services/logs/history/{id}.log'
+        
+        with open(caminho_arquivo,'a',encoding='utf-8') as log:
+            for msg in req['outputs']:
+                soup = BeautifulSoup(msg,'html.parser')
+                msglog = soup.getText()
+                log.write(f'{msglog}\n')
             
     
 
@@ -355,13 +367,4 @@ def answerDataFrame(request, idReq):
         if (req['id'] == idReq):
             req['dataframe']['hasAnswer'] = True
             req['dataframe']['answer'] = df
-            # req['question'] = None
-            # restartMacro(idReq)
             return {'mensagens':'Arquivo Excel recebido e processado pelo servidor.'}
-        # if (req['id'] == idReq):
-        #     req['dataframe'] = pd.DataFrame()
-        #     req['dataframe'] = df
-        #     # req['question'] = None
-        #     # restartMacro(idReq)
-        #     return jsonify({'status': 'Arquivo Excel recebido e processado com sucesso'})
-        

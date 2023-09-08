@@ -97,14 +97,8 @@ function selecionaNovaMacro(event){
 
     if (select.value != ""){
         statusToolBar('ready')
-        // $("#btn-info").attr('disabled',false)
-        // $("#btn-play").attr('disabled',false)
     }else{
         statusToolBar('idle')
-        // $("#btn-info").attr('disabled',true)
-        // $("#btn-play").attr('disabled',true)
-        // $("#btn-pause").attr('disabled',true)
-        // $("#btn-stop").attr('disabled',true)
     }
 }
 
@@ -165,6 +159,8 @@ function playMacro(){
                 success: function(response) {
                     clearInterval(trackerTimer)
                     console.log(response)
+                    // sendMensageEmulator(`Log de execução: ${finallog}`,'text-info');
+                    atualizaPropriedades(null)
                     sendMensageEmulator(`Macro ${macroName} requisição ${reqId} finalizada!`,'text-success')
                     statusToolBar('idle')
                 },
@@ -292,6 +288,7 @@ function startTrackerConnection(reqId){
                         sendMensageEmulator('Requisição não existe na fila','text-danger');
                         sendMensageEmulator(`Log de execução: ${finallog}`,'text-info');
                         atualizaPropriedades(null)
+                        statusToolBar('idle')
                         $('#currentStatus').val('')
                         clearInterval(trackerTimer)
                     }
@@ -649,12 +646,12 @@ function atualizaPropriedades(dadosReq){
             owner = properties.owner
             starttime = properties.starttime
             lastuser = properties.lastuser
-            properties.pause==true ? pause='Sim' : pause = 'Não'
-            properties.abort==true ? abort='Sim' : abort = 'Não'
-            hasQuestion == true ? question='Sim' : question = 'Não'
-            hasPassword == true ? inputPassword='Sim' : inputPassword = 'Não'
-            hasSelect == true ? select='Sim' : select = 'Não'
-            hasFile == true ? excel='Sim' : excel = 'Não'
+            properties.pause==true ? pause='<strong>Sim</strong>' : pause = 'Não'
+            properties.abort==true ? abort='<strong>Sim</strong>' : abort = 'Não'
+            hasQuestion == true ? question='<strong>Sim</strong>' : question = 'Não'
+            hasPassword == true ? inputPassword='<strong>Sim</strong>' : inputPassword = 'Não'
+            hasSelect == true ? select='<strong>Sim</strong>' : select = 'Não'
+            hasFile == true ? excel='<strong>Sim</strong>' : excel = 'Não'
             // dataframe==null ? dataframe='Não' : dataframe = 'Sim'
     
             $('#prop-status').html(autStatus)

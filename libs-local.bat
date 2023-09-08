@@ -13,3 +13,4 @@ pip install colorama
 pip install Flask-Bootstrap
 pip install Flask-FontAwesome
 pip install python-dotenv
+pip install beautifulsoup4

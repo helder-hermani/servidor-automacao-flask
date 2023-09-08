@@ -37,7 +37,7 @@ def start_server(app, https=False):
 
     server = server_settings()
     ambiente = server['ambiente']
-    https = server['ambiente'] == 'https'
+    https = False
     dominio = server['dominio']
     current_ip = server['ip']
     port = server['porta']
@@ -45,6 +45,8 @@ def start_server(app, https=False):
     print('==============================================================')
     print(f'AMBIENTE: {ambiente}')
     print(f'SERVIDOR ATUAL: {dominio}')
+    print(server['ambiente_txt'])
+    print(server['versao_txt'])
     print('==============================================================')
 
     secret_key = Fernet.generate_key()
@@ -109,17 +111,7 @@ def start_server(app, https=False):
         app.run(ssl_context=context, host=current_ip, port=port)
     else:
         app.run(host=current_ip, port=port)
-        # app.run(host=current_ip, port=80)
-
-    # if (ambiente == 'prod'):
-    #     serve(app, host=current_ip, port=port)
-    # else:
-    #     if (https):
-    #         context = ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)
-    #         context.load_cert_chain('cert.pem', 'key.pem')
-    #         app.run(ssl_context=context, host=current_ip, port=port)
-    #     else:
-    #         app.run(host=current_ip, port=80)
+        
 
     try:
         while True:
