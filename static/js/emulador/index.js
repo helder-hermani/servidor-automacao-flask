@@ -139,6 +139,7 @@ function playMacro(){
     sendMensageEmulator('<hr>')
     sendMensageEmulator(`INICIALIZANDO MACRO ${macroName}`,'text-info')
     sendMensageEmulator('<hr>')
+    $('#lastMessageIndex').val(-1)
 
     $.ajax({
         method: 'GET',
