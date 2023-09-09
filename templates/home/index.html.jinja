@@ -1,0 +1,205 @@
+{% extends "base.html.jinja" %}
+{% block head %}
+    {{ super() }}
+{% endblock %}
+
+{% block content_left %}{% endblock %}
+
+{% block content_right %}
+    <div class="main">
+        <h3>Servidor de Automações - CEPAT</h3>    
+        <h5>{{ server['serverName'] }}</h5>
+        <div class="div-server-info">
+            <div class="row">
+                <div class="col-2">
+                    Domínio:
+                </div>
+                <div class="col-10">
+                    {{ server['dominio'] }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-2">
+                    Versão:
+                </div>
+                <div class="col-10">
+                    {{ server['versao'] }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-2">
+                    Protocolo:
+                </div>
+                <div class="col-10">
+                    {{ server['protocolo'] }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-2">
+                    Ip:
+                </div>
+                <div class="col-10">
+                    {{ server['ip'] }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-2">
+                    Porta:
+                </div>
+                <div class="col-10">
+                    {{ server['porta'] }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-2">
+                    Ambiente Virtual:
+                </div>
+                <div class="col-10">
+                    {{ server['ambiente_txt'] }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-2">
+                    Interpretador:
+                </div>
+                <div class="col-10">
+                    {{ server['versao_txt'] }}
+                </div>
+            </div>
+        </div>
+        <div class="div-others-title">
+            <h5>Servidores</h5>
+            <div>
+                <span>Testando conexão: </span><input type="text" disabled id='progress-conection-test' class="progress-conection-test" value="10">
+            </div>
+        </div>
+            <div class="div-server-info div-others">
+                <div class="row linha-server">
+                    <div class="col-4">
+                        <strong>Nome servidor</strong>
+                    </div>
+                    <div class="col-1">
+                        <strong>Versão</strong>
+                    </div>
+                    <div class="col-1">
+                        <strong>Ambiente</strong>
+                    </div>
+                    <div class="col-2">
+                        <strong>Instância</strong>
+                    </div>
+                    <div class="col-2">
+                        <strong>Domínio</strong>
+                    </div>
+                    <div class="col-1" style="text-align: center;">
+                    </div>
+                    <div class="col-1">
+                    </div>
+                </div>
+                {% for others in lista_servers%}
+                    <div class="row linha-server">
+                        <div class="col-4">
+                            {{others['server_name']}}
+                        </div>
+                        <div class="col-1">
+                            {{others['version']}}
+                        </div>
+                        <div class="col-1">
+                            {{others['environment']}}
+                        </div>
+                        <div class="col-2">
+                            {{others['instance']}}
+                        </div>
+                        <div class="col-2">
+                            {{others['domain']}}
+                        </div>
+                        <div class="col-1" style="text-align: center;">
+                            <input type="hidden" value="{{others['ping_url']}}" id="serverId-{{others['server_id']}}" class="server_id">
+                            <i class="fa-solid fa-signal" id="signal-{{others['server_id']}}"></i>
+                        </div>
+                        <div class="col-1">
+                            <a href="{{others['domain']}}">
+                                <button class="btn-go" id="btnServerId-{{others['server_id']}}" disabled><i class="fa-solid fa-right-from-bracket"></i></button>
+                            </a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+    </div>
+{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="{{url_for('static', filename='css/home/index.css')}}">
+{% endblock %}
+
+{% block js %}
+    <script>
+        function progressServerCheck(){
+            defaultTimeWait = parseInt($('#progress-conection-test').val())
+            currentTime = defaultTimeWait
+            setInterval(function(){
+                if (currentTime >= 1){
+                    currentTime = currentTime -1
+                    $('#progress-conection-test').val(currentTime)
+                }else{
+                    testaConexoes()
+                    currentTime = defaultTimeWait+1
+                }
+                console.log('checagem')
+            },1000)
+        }
+
+        function testaConexoes(){
+            $servers = document.getElementsByClassName('server_id');
+            
+            var serverId = 0;
+
+            for (var i=0;i<=$servers.length-1;i++){
+                var $server = $servers[i]
+                var url = $server.value
+                $.ajax({
+                    method: 'GET',
+                    url: url,
+                    success: function(response) {
+                        serverId = serverId + 1
+                        {# serverId = $server.id.split('-')[1] #}
+                        console.log(response)
+                        console.log(serverId)
+                        console.log(`#signal-${serverId}`)
+                        $(`#signal-${serverId}`).removeClass('text-danger')
+                        $(`#signal-${serverId}`).addClass('text-success')
+                        $(`#btnServerId-${serverId}`).attr('disabled',false)
+                    },
+                    error: function(xhr, textStatus, errorThrown) {
+                        serverId = serverId + 1
+                        console.error(xhr.responseText);
+                        $(`#signal-${serverId}`).removeClass('text-success')
+                        $(`#signal-${serverId}`).addClass('text-danger')
+                        $(`#btnServerId-${serverId}`).attr('disabled',true)
+                    }
+                });
+            }
+        }
+
+        progressServerCheck()
+        
+    </script>
+    {# <script src="{{url_for('static', filename='js/index.js')}}"></script>
+    <script>
+        function ok(){
+            alert('Deu tudo certo!')
+        }
+        function fail(){
+            alert('Deu tudo errado!')
+        }
+
+        function doLogin(event){
+            event.preventDefault()
+            user = document.getElementById('user').value
+            password = document.getElementById('password').value
+            
+            data = {user:user,password:password}
+
+            makeAjax('/api/dologin','POST',data=data,ok,fail)
+        }    
+    </script> #}
+{% endblock %}

@@ -3,6 +3,11 @@ import os
 from dotenv import load_dotenv
 from services.network.getip import get_local_ip
 
+# class ServerInfo:
+#     def __init__(self) -> None:
+#         self.serverInfo = server_settings()
+
+
 def verifica_ambiente_virtual():
     if 'CONDA_DEFAULT_ENV' in os.environ:
         ambiente_virtual = os.environ['CONDA_DEFAULT_ENV']
@@ -18,7 +23,7 @@ def verifica_ambiente_virtual():
 
     if 'CONDA_PREFIX' in os.environ:
         caminho_python = os.path.join(os.environ['CONDA_PREFIX'], 'bin', 'python')
-        versao_txt = f'Python versão Anaconda (ambiente base): {sys.version}'
+        versao_txt = f'Python versão Anaconda: {sys.version}'
         # try:
         #     resultado = os.popen(f'{caminho_python} --version').read()
         #     versao = resultado.strip().split()[-1]
@@ -35,40 +40,11 @@ def verifica_ambiente_virtual():
     }
 
 
-# def verifica_ambiente_virtual():
-#     if 'CONDA_DEFAULT_ENV' in os.environ:
-#         ambiente_virtual = os.environ['CONDA_DEFAULT_ENV']
-#         if ambiente_virtual == 'base':
-#             return "O script está sendo executado no ambiente virtual base do Conda."
-#         else:
-#             return f"O script está sendo executado em um ambiente virtual do Conda: {ambiente_virtual}"
-#     else:
-#         return "O script está sendo executado no ambiente virtual padrão do Python."
-    
-# def nome_ambiente():
-#     # Verifique se a variável de ambiente CONDA_PREFIX está definida
-#     if 'CONDA_PREFIX' in os.environ:
-#         # Construa o caminho completo para o executável do Python no ambiente virtual
-#         caminho_python = os.path.join(os.environ['CONDA_PREFIX'], 'bin', 'python')
-
-#         # Obtenha a versão do Python usando o comando --version
-#         try:
-#             resultado = os.popen(f'{caminho_python} --version').read()
-#             versao = resultado.strip().split()[-1]
-#             print(f'Python versão no ambiente virtual: {versao}')
-#         except Exception as e:
-#             print(f'Erro ao verificar a versão do Python: {str(e)}')
-#     else:
-#         print('A variável de ambiente CONDA_PREFIX não está definida. Não foi possível verificar a versão do Python.')
-
-#     # Verifique a versão do Python atual (fora do ambiente virtual)
-#     print(f'Python versão fora do ambiente virtual: {sys.version}')
-
-
-
 def server_settings():
     load_dotenv()
-    ambiente = os.environ['AMBIENTE']
+    serverName = os.environ['SERVER_NAME']
+    versao = os.environ['VERSION']
+    ambiente = os.environ['ENVIRONMENT']
     user_authenticate = os.environ['USER_AUTHENTICATE'] != "False"
     
     protocolo = 'http'
@@ -87,6 +63,8 @@ def server_settings():
         port = os.environ['PORT_PYTHON']
 
     return {
+            'serverName': serverName,
+            'versao': versao,
             'ambiente': ambiente,
             'protocolo': protocolo,
             'porta':port,

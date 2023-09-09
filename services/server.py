@@ -39,14 +39,22 @@ def start_server(app, https=False):
     ambiente = server['ambiente']
     https = False
     dominio = server['dominio']
+    serverName = server['serverName']
+    versao = server['versao']
     current_ip = server['ip']
     port = server['porta']
 
     print('==============================================================')
+    print('==============================================================')
+    print('==============================================================')
     print(f'AMBIENTE: {ambiente}')
-    print(f'SERVIDOR ATUAL: {dominio}')
+    print(f'SERVIDOR ATUAL: {serverName}')
+    print(f'VERSÃO: {versao}')
+    print(f'DOMÍNIO ATUAL: {dominio}')
     print(server['ambiente_txt'])
     print(server['versao_txt'])
+    print('==============================================================')
+    print('==============================================================')
     print('==============================================================')
 
     secret_key = Fernet.generate_key()

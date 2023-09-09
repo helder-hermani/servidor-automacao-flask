@@ -6,14 +6,19 @@ from services.tracker import active_tracks
 import services.tracker as Tracker
 import controllers.Login.login as Login
 import controllers.Emulador.emulador as Emulador
+import controllers.Servers.ping as Ping
 
 group_api = Blueprint('api',__name__)
 
 def api(app):
     @group_api.route("/")
     def api_index():
-        status = {'status':'OK'}
-        return json.dumps(status, ensure_ascii=False).encode('utf-8')
+        try:
+            return jsonify(Ping.ping()),200
+        except Exception as err:
+            return str(err), 500
+        # status = {'status':'OK'}
+        # return json.dumps(status, ensure_ascii=False).encode('utf-8')
     
     @group_api.post("/dologin")
     def dologin():   

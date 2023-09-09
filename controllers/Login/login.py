@@ -22,7 +22,7 @@ def handle_login(app, request):
         else:
             user = request.form.get('user')
             handle_login_otp(user)
-            return render_template('/index/index.html.jinja',erroAuth = True, loginOTP=True, user=user)
+            return render_template('/home/index.html.jinja',erroAuth = True, loginOTP=True, user=user)
             return "Falha na autenticação"
 
 def handle_login_otp(user):

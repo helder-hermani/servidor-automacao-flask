@@ -4,11 +4,17 @@ import controllers.Login.login as Login
 import controllers.MacrosApi.viewMacrosApi as viewMacrosApi
 import controllers.MacrosApi.viewMacro as viewMacro
 import controllers.Emulador.emulador as emulador
+import controllers.Servers.index as servers
 
 def web(app):
     @app.route("/")
     def index():
         return render_template('/index/index.html.jinja')
+    
+    @app.route("/home")
+    def wb_home():
+        return servers.index()
+        
 
     @app.post('/dologin')
     def web_dologin():

@@ -6,6 +6,11 @@ from flask import jsonify
 import pandas as pd
 from bs4 import BeautifulSoup
 
+diretorio_atual = os.path.dirname(__file__)
+diretorio_pai = os.path.abspath(os.path.join(diretorio_atual, '..', '..'))
+sys.path.append(diretorio_pai)
+from services.config import server_settings
+
 active_tracks = []
 
 class Tracker:
@@ -179,6 +184,8 @@ class Tracker:
 
 
     def savelog(self, req, msg):
+        server = server_settings()
+        dominio = server['dominio']
         id = req['id']
         name = req['name']
         owner = req['owner']
@@ -186,11 +193,10 @@ class Tracker:
         moment = datetime.now().strftime('%d/%m/%Y %H:%M:%S')
 
         caminho_arquivo = 'services/logs/requests.log'
-        # caminho_arquivo = '../logs/requests.log'
 
         print(f'{id};{name};{owner};{msg};{moment}\n')
         with open(caminho_arquivo,'a',encoding='utf-8') as log:
-            log.write(f'{id};{name};{owner};{lastuser};{msg};{moment}\n')
+            log.write(f'{dominio};{id};{name};{owner};{lastuser};{msg};{moment}\n')
 
     def saveHistory(self, req):
         id = req['id']
