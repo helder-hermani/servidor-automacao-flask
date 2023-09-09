@@ -5,6 +5,8 @@ import controllers.MacrosApi.viewMacrosApi as viewMacrosApi
 import controllers.MacrosApi.viewMacro as viewMacro
 import controllers.Emulador.emulador as emulador
 import controllers.Servers.index as servers
+import controllers.Logs.index as Logs
+import controllers.Logs.downloadMensagens as LogDownload
 
 def web(app):
     @app.route("/")
@@ -29,6 +31,14 @@ def web(app):
     def web_macrosapi():
         return viewMacrosApi.index()
         # return render_template('emulador/index.html.jinja')
+
+    @app.get('/logs')
+    def web_log():
+        return Logs.logIndex()
+    
+    @app.get('/logs/download/mensagens/<id>')
+    def web_log_download_msg(id):
+        return LogDownload.downloadMensagens(id)
     
     @app.get('/logout')
     def web_logout():

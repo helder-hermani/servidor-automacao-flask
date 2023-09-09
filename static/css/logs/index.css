@@ -1,0 +1,13 @@
+table th, td{
+    font-size: .8rem;
+}
+
+.main{
+    padding: 2rem;
+}
+
+.tabela-logs{
+    margin: 2rem 0;
+    background-color: rgba(255, 255, 255, .8);
+    padding: .5rem;
+}

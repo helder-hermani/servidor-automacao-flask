@@ -200,7 +200,7 @@ class Tracker:
 
     def saveHistory(self, req):
         id = req['id']
-        caminho_arquivo = f'services/logs/history/{id}.log'
+        caminho_arquivo = f'static/app/logs/history/{id}.log'
         
         with open(caminho_arquivo,'a',encoding='utf-8') as log:
             for msg in req['outputs']:
