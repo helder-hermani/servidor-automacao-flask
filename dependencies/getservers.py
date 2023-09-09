@@ -70,15 +70,15 @@ def listaServersConfig():
                             domain = server['protocolo'] + '://' + server['ip'] + ':' + port
 
                         existing_server = {
-                            'server_id': server_id,
-                            'server_name': server_name,
-                            'version': version,
-                            'environment': environment,
-                            'instance': instancia,
-                            'port_python': port,
-                            'domain': domain,
-                            'ping_url': f'{domain}/api',
-                            'folder': servidor
+                            'server_name': server_name.strip(),
+                            'version': version.strip(),
+                            'environment': environment.strip(),
+                            'instance': instancia.strip(),
+                            'port': port.strip(),
+                            # 'port_python': port,
+                            'domain': domain.strip(),
+                            'ping_url': f'{domain.strip()}/api',
+                            'folder': servidor.strip()
                         }
                         lista_servers.append(existing_server)
     
@@ -126,9 +126,9 @@ def listaExistingServers():
                     
                 if (isServer):
                         existing_server = {
-                            'server_name': server_name,
-                            'version': version,
-                            'folder': servidor
+                            'server_name': server_name.strip(),
+                            'version': version.strip(),
+                            'folder': servidor.strip()
                         }
                         lista_servers.append(existing_server)
     

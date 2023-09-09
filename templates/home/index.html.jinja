@@ -69,9 +69,15 @@
         </div>
         <div class="div-others-title">
             <h5>Servidores</h5>
-            <div>
-                <span>Testando conexão: </span><input type="text" disabled id='progress-conection-test' class="progress-conection-test" value="10">
-            </div>
+            {# <div class="cursor-teste-conexao"> #}
+                {# <span>Testando conexão: </span> #}
+                {# <div class="text-center">
+                    <div class="spinner-border" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </div> #}
+                <span>Testando conexão: </span><input type="text" disabled id='progress-conection-test' class="progress-conection-test" value="20">
+            {# </div> #}
         </div>
             <div class="div-server-info div-others">
                 <div class="row linha-server">
@@ -113,12 +119,12 @@
                             {{others['domain']}}
                         </div>
                         <div class="col-1" style="text-align: center;">
-                            <input type="hidden" value="{{others['ping_url']}}" id="serverId-{{others['server_id']}}" class="server_id">
-                            <i class="fa-solid fa-signal" id="signal-{{others['server_id']}}"></i>
+                            <input type="hidden" value="{{others['ping_url']}}" id="serverId-{{others['server_id']}}" port="{{ others['port'] }}" class="server_id">
+                            <i class="fa-solid fa-signal" id="signal-{{others['port']}}"></i>
                         </div>
                         <div class="col-1">
                             <a href="{{others['domain']}}">
-                                <button class="btn-go" id="btnServerId-{{others['server_id']}}" disabled><i class="fa-solid fa-right-from-bracket"></i></button>
+                                <button class="btn-go" id="btnServer-{{others['port']}}" disabled><i class="fa-solid fa-right-from-bracket"></i></button>
                             </a>
                         </div>
                     </div>
@@ -150,33 +156,38 @@
 
         function testaConexoes(){
             $servers = document.getElementsByClassName('server_id');
-            
-            var serverId = 0;
+            makeAjax($servers, 0)
+        }
 
-            for (var i=0;i<=$servers.length-1;i++){
-                var $server = $servers[i]
-                var url = $server.value
+        function makeAjax(servidores, iRequest){
+            debugger;
+            var server = servidores[iRequest]
+            var url = server.value
+            porta_req = server.getAttribute('port')
+
+            if (iRequest <= servidores.length-1){
                 $.ajax({
                     method: 'GET',
                     url: url,
                     success: function(response) {
-                        serverId = serverId + 1
-                        {# serverId = $server.id.split('-')[1] #}
                         console.log(response)
-                        console.log(serverId)
-                        console.log(`#signal-${serverId}`)
-                        $(`#signal-${serverId}`).removeClass('text-danger')
-                        $(`#signal-${serverId}`).addClass('text-success')
-                        $(`#btnServerId-${serverId}`).attr('disabled',false)
+                        debugger
+                        const {porta} = response
+                        $(`#signal-${porta}`).removeClass('text-danger')
+                        $(`#signal-${porta}`).addClass('text-success')
+                        $(`#btnServer-${porta}`).attr('disabled',false)
+                        makeAjax(servidores, iRequest+1)
                     },
                     error: function(xhr, textStatus, errorThrown) {
-                        serverId = serverId + 1
-                        console.error(xhr.responseText);
-                        $(`#signal-${serverId}`).removeClass('text-success')
-                        $(`#signal-${serverId}`).addClass('text-danger')
-                        $(`#btnServerId-${serverId}`).attr('disabled',true)
+                        {# console.error(xhr.responseText); #}
+                        $(`#signal-${porta_req}`).removeClass('text-success')
+                        $(`#signal-${porta_req}`).addClass('text-danger')
+                        $(`#btnServer-${porta_req}`).attr('disabled',true)
+                        makeAjax(servidores, iRequest+1)
                     }
                 });
+            }else{
+                return
             }
         }
 
