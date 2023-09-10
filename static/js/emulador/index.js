@@ -119,8 +119,27 @@ function showMacroInfo(){
     });
 }
 
+function showLinkexterno(){
+    dominio = $('#dominio').val()
+    currentMacroName = $('#currentMacroName').val()
+    txtUser = $('#txtUser').val()
+
+    link = `${dominio}/emulador/externo/${currentMacroName}/${txtUser}`
+    textoEvento = `window.open('${link}', 'NomeDaJanela', 'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=1200,height=600'); return false;`
+
+    $('#a-link-externo').attr('onclick',textoEvento)
+    $('#a-link-externo').text(link)
+
+    // ="window.open('http://192.168.0.216:70/emulador/externo/minhaApp2/c084604', 'NomeDaJanela', 'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=1200,height=600'); return false;"
+    $('#frameLinkExterno').addClass('frameInfo-show')
+}
+
 function hideMacroInfo(){
     $('#frameInfo').removeClass('frameInfo-show')
+}
+
+function hideLinkexterno(){
+    $('#frameLinkExterno').removeClass('frameInfo-show')
 }
 
 function hidePropriedades(){
@@ -162,7 +181,7 @@ function playMacro(){
                     // sendMensageEmulator(`Log de execução: ${finallog}`,'text-info');
                     atualizaPropriedades(null)
                     sendMensageEmulator(`Macro ${macroName} requisição ${reqId} finalizada!`,'text-success')
-                    statusToolBar('idle')
+                    statusToolBar('ready')
                 },
                 error: function(xhr, textStatus, errorThrown) {
                     clearInterval(trackerTimer)
@@ -557,7 +576,10 @@ function sendMensageEmulator(msg, style=null){
 function statusToolBar(status){
     switch (status) {
         case 'idle':
+            $("#btn-nova").attr('disabled',true)
+            $("#btn-excluir").attr('disabled',true)
             $("#btn-info").attr('disabled',true)
+            $("#btn-link-externo").attr('disabled',true)
             $("#btn-play").attr('disabled',true)
             $("#btn-pause").attr('disabled',true)
             $("#btn-stop").attr('disabled',true)
@@ -565,15 +587,16 @@ function statusToolBar(status){
             $('#txtReqId').val('')
             $('#txtReqId').addClass('d-none')
             $('#div-periodo-atualizacao').addClass('d-none')
-            // $('#atualizacao-progress').addClass('d-none')
-            // $('#progress-bar').attr('style',`width: ${0}%`)
             $('#spinner-status').addClass('d-none')
             $('#sipnner-cursor').addClass('text-success')
             $('#sipnner-cursor').removeClass('text-warning')
             $('#currentStatus').val('')
             break;
         case 'ready':
+            $("#btn-nova").attr('disabled',false)
+            $("#btn-excluir").attr('disabled',false)
             $("#btn-info").attr('disabled',false)
+            $("#btn-link-externo").attr('disabled',false)
             $("#btn-play").attr('disabled',false)
             $("#btn-pause").attr('disabled',true)
             $("#btn-stop").attr('disabled',true)
@@ -581,20 +604,20 @@ function statusToolBar(status){
             $('#txtReqId').val('')
             $('#txtReqId').addClass('d-none')
             $('#div-periodo-atualizacao').addClass('d-none')
-            // $('#atualizacao-progress').addClass('d-none')
-            // $('#progress-bar').attr('style',`width: ${0}%`)
             $('#spinner-status').addClass('d-none')
             $('#currentStatus').val('')
             break;
         case 'running':
+            $("#btn-nova").attr('disabled',true)
+            $("#btn-excluir").attr('disabled',true)
             $("#btn-info").attr('disabled',false)
+            $("#btn-link-externo").attr('disabled',false)
             $("#btn-play").attr('disabled',true)
             $("#btn-pause").attr('disabled',false)
             $("#btn-stop").attr('disabled',false)
             $("#btn-reqInfo").attr('disabled',false)
             $('#txtReqId').removeClass('d-none')
             $('#div-periodo-atualizacao').removeClass('d-none')
-            // $('#atualizacao-progress').removeClass('d-none')
             $('#spinner-status').removeClass('d-none')
             break;
         default:
@@ -777,8 +800,53 @@ function salvaNovaAutomacao(){
         },
         error: function(error) {
             msgResultado = error.responseText
-            msgResultado = `<i class="fa-regular fa-circle-check"></i> Serviço deletado com sucesso!`
             $resultado = document.getElementById('msg-resultado')
+            $resultado.classList.add('text-danger')
+            $resultado.innerHTML(msgResultado)
+            console.error("Erro ao enviar AJAX: ", error);
+        }
+    });
+}
+
+function deletaAutomacao(){
+    nome = $('#currentMacroName').val()
+    telaCadastro = `
+    <div style='padding: 2rem;'>
+        <p>Confirma a exclusão da automação <span id="delete-nome">${nome}</span>?</p>
+        <p>Este processo é irreversível.</p>
+        <button class="btn btn-danger" style="width: 10%;" onClick='confirmaDeleteAutomacao("${nome}")'>Confirmar</button>
+        <div id="delete-resultado"></div>
+    </div>
+    `
+    $('#telaEmulador').html('')
+    $('#telaEmulador').html(telaCadastro)
+}
+
+function confirmaDeleteAutomacao(nome){
+    dados = {nome: nome}
+
+    data = JSON.stringify(dados)
+
+    $.ajax({
+        method: 'post',
+        url: '/api/cli/delete/automacao',
+        data: data,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function(response) {
+            console.log(response);
+            msgResultado = `<i class="fa-regular fa-circle-check"></i> Automação deletada com sucesso!`
+            $resultado = document.getElementById('delete-resultado')
+            $resultado.classList.add('text-success')
+            $resultado.innerHTML = msgResultado
+
+            setInterval(() => {
+                window.location.reload()
+            }, 2000);
+        },
+        error: function(error) {
+            msgResultado = error.responseText
+            $resultado = document.getElementById('delete-resultado')
             $resultado.classList.add('text-danger')
             $resultado.innerHTML(msgResultado)
             console.error("Erro ao enviar AJAX: ", error);

@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-from macros.Automacao.automacaoWeb.home import start as start
+from macros.Automacao.novaMacroWeb.home import start as start
+
 from macros.Automacao.minhaApp2.home import start as start
 from macros.Automacao.minhaApp1.home import start as start
 from flask import render_template_string, render_template, jsonify, Blueprint
@@ -30,8 +31,10 @@ def automacao(app):
     
 
 
-    @group_automacao.route("/automacaoWeb/<req_id>/<req_name>/<user>")
-    def macro_automacaoWeb_index(req_id, req_name, user):
+
+
+    @group_automacao.route("/novaMacroWeb/<req_id>/<req_name>/<user>")
+    def macro_novaMacroWeb_index(req_id, req_name, user):
         try:
             retorno = start(req_id, req_name, user)
             return retorno

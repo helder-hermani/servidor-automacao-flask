@@ -4,6 +4,7 @@ import controllers.Login.login as Login
 import controllers.MacrosApi.viewMacrosApi as viewMacrosApi
 import controllers.MacrosApi.viewMacro as viewMacro
 import controllers.Emulador.emulador as emulador
+import controllers.Emulador.externo as emuladorexterno
 import controllers.Servers.index as servers
 import controllers.Logs.index as Logs
 import controllers.Logs.downloadMensagens as LogDownload
@@ -26,6 +27,10 @@ def web(app):
     def web_emulador():
         return emulador.showEmulador()
         # return render_template('emulador/index.html.jinja')
+        
+    @app.get('/emulador/externo/<macroName>/<user>')
+    def web_emulador_externo(macroName, user):
+        return emuladorexterno.showEmuladorExterno(macroName, user)
     
     @app.get('/web/macrosapi')
     def web_macrosapi():

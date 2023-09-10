@@ -127,3 +127,10 @@ def api(app):
             return CliMacroAutomacao.make(request)
         except Exception as err:
             return f'Erro na execução. {str(err)}',500
+        
+    @group_api.post('/cli/delete/automacao')
+    def cli_delete_automacao_api():
+        try:
+            return CliMacroAutomacao.delete(request)
+        except Exception as err:
+            return f'Erro na execução. {str(err)}',500

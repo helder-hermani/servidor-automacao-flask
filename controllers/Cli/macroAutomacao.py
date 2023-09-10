@@ -18,7 +18,6 @@ def make(request):
 def delete(request):
     params = request.json
     nome = params['nome']
-    metodo = params['metodo']
     
     appCli = CliApi()
-    return appCli.deleteMacroApi(nome,metodo)
+    return appCli.deleteAutomacao(nome)

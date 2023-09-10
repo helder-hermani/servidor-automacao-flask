@@ -10,18 +10,18 @@
     <div class="container">
         <div class='barra-ferramentas'>
             <div>
-                <label for="macros-ativas">Macros Ativas:
+                <label for="macros-ativas" style="margin: .5rem 0;">Macros Ativas:
                     <select id="macros-ativas" onchange="recuperaMacroNovo(event)">
                         <option value="" disabled>Macros Em execução</option>
                     </select>
                 </label>
                 <button id="btn-btnRefreshMacro" onclick="refreshMacrosExecucao()" title="Atualiza macros em execução"><i class="fa-solid fa-arrows-rotate"></i></i></button>
-                <button id="btn-info" onclick="criaNovaAutomacao()" title="Criar nova automação"><i class="fa-solid fa-plus text-primary"></i></button>
-                {# <button id="btn-btnViewRecuperaMacro" onclick="recuperaMacro()" title="Visualiza Status da Macro" disabled><i class="fa-solid fa-eye text-blue"></i></i></button> #}
+                <button id="btn-nova" onclick="criaNovaAutomacao()" title="Criar nova automação"><i class="fa-solid fa-plus text-primary"></i></button>
+                <button id="btn-excluir" onclick="deletaAutomacao()" title="Deletar automação" disabled><i class="fa-solid fa-trash text-danger"></i></button>
                 <input type="hidden" id="recupera-macro-id" />
             </div>
             <div>
-                <label for="iniciar-macro">Iniciar Macro:
+                <label for="iniciar-macro" style="margin: .5rem 0;">Iniciar Macro:
                     <select id="iniciar-macro" onchange="selecionaNovaMacro(event)">
                         <option value="">Macro Registradas</option>
                         {% for macro in macrosRegistradas%}
@@ -32,12 +32,12 @@
             </div>
             <div class="botoes">
                 <button id="btn-info" onclick="showMacroInfo()" disabled title="Informações da automação"><i class="fa-solid fa-circle-info text-primary"></i></button>
+                <button id="btn-link-externo" onclick="showLinkexterno()" title="Link externo" disabled><i class="fa-solid fa-link text-dark"></i></button>
                 <button id="btn-play" onclick="playMacro()" disabled title="Iniciar execução"><i class="fa-solid fa-play text-success"></i></button>
                 <button id="btn-pause" onclick="pauseMacro()" disabled title="Pausar execução"><i class="fa-solid fa-pause text-dark"></i></button>
                 <button id="btn-stop" onclick="stopMacro()" disabled title="Interromper execução"><i class="fa-solid fa-stop text-danger"></i></button>
                 <button id="btn-reqInfo" onclick="showPropriedades()" title="Propriedades" disabled><i class="fa-brands fa-product-hunt text-info"></i></button>
-                <button id="btn-erase" onclick="limpaTela()" title="'Limpa tela"><i class="fa-solid fa-eraser"></i></button>
-                {# <button id="btn-erase" onclick="pegaPropriedades()" title="'Recupera Requisição"><i class="fa-solid fa-check"></i></button> #}
+                <button id="btn-erase" onclick="limpaTela()" title="Limpa tela"><i class="fa-solid fa-eraser"></i></button>
             </div>
 
             <div>
@@ -64,8 +64,16 @@
                 <div class="frame-info-div-close">
                     <button class="btn btn-light" id="closeInfo" onclick="hideMacroInfo()"><i class="fa-regular fa-rectangle-xmark"></i></button>
                 </div>
-                <div id="frame-info-div-content" class="frame-info-div-content">
-                    Teste de conteúdo
+                <div id="frame-info-div-content" class="frame-info-div-content"></div>
+            </div>
+            <div id="frameLinkExterno" class="frameInfo">
+                <div class="frame-info-div-close">
+                    <button class="btn btn-light" id="closeLinkexterno" onclick="hideLinkexterno()"><i class="fa-regular fa-rectangle-xmark"></i></button>
+                </div>
+                <div id="frame-linkExterno-div-content" class="frame-info-div-content">
+                    <h5>Link para aplicações web externas:</h5>
+                    <a href="#" id="a-link-externo"></a>
+                    <p class="my-3 text-danger">Alterar o último parâmtero para a identificação (matrícula) do usuário.</p>
                 </div>
             </div>
             <div id="framePropriedades" class="frameInfo">

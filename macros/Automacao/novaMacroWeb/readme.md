@@ -1,15 +1,15 @@
 <!-- -*- coding: utf-8 -*- -->
 
 ##### Nome
-automacaoWeb
+novaMacroWeb
 
 
 ##### Titulo
-Teste web
+Criação via Web
 
 
 ##### Descrição
-teste web
+Teste de criação de automação via console
 
 
 ##### Instruções
@@ -33,5 +33,5 @@ GET
 
 
 ##### Rota
-/automacao/automacaoWeb
+/automacao/novaMacroWeb
 

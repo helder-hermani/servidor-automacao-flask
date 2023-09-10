@@ -75,5 +75,25 @@ class CliApi:
             return {'status': f'Automação {nome} criada com sucesso!'},200
         except Exception as err:
             return str(err),500
+        
+
+    def deleteAutomacao(self, nome):
+        try:
+            sysMacroAut = macroAutomacao.MacroAut()
+            macroExists = sysMacroAut.macroExists(nome)
+            routeExists = sysMacroAut.routeExists(nome)
+
+            if (not macroExists):
+                raise Exception(f'Erro na execução. Macro {nome} não existe.')
+
+            if (not routeExists):
+                raise Exception(f'Erro na execução. Rota /{nome} não existe.')
+            
+            # Procede remoção
+            sysMacroAut.deleteRoute(nome)
+            sysMacroAut.deleteMacroAut(nome)
+            return {'status': f'Automação {nome} deletada com sucesso!'},200
+        except Exception as err:
+            return str(err),500
 
         

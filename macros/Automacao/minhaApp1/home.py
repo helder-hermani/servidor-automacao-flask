@@ -21,16 +21,16 @@ def start(req_id, req_name, user):
         nome_usuario = t.input(req_id,"Infome seu nome:")
         t.send(req_id, f'Início da macro de testes - Contador de Mensagens - Nome do usuário: <span style="font-size: 1.2rem; color: yellow;">{nome_usuario}</span>')
 
-        # chave = t.inputPassword(req_id,"Infome sua chave de acesso:")
-        # t.send(req_id, f'Chave de acesso informada: {chave}')
+        chave = t.inputPassword(req_id,"Infome sua chave de acesso:")
+        t.send(req_id, f'Chave de acesso informada: {chave}')
 
-        # t.send(req_id,"Selecione um arquivo Excel (.xlsx), que contenha uma coluna com o nome FILMES (letras maiúsculas)")
+        t.send(req_id,"Selecione um arquivo Excel (.xlsx), que contenha uma coluna com o nome FILMES (letras maiúsculas)")
         
-        # df = t.dataframe(req_id)
+        df = t.dataframe(req_id)
 
-        # for index, row in df.iterrows():
-        #     contrato = row['FILMES']
-        #     t.send(req_id,f'Filme informado: {contrato}')
+        for index, row in df.iterrows():
+            contrato = row['FILMES']
+            t.send(req_id,f'Filme informado: {contrato}')
 
         its_enough = False
         counter = 0
