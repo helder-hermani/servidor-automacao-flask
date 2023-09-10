@@ -696,7 +696,92 @@ function atualizaPropriedades(dadosReq){
         $('#prop-password').text('')
         $('#prop-select').text('')
         $('#prop-excel').text('')
-    }
+    }    
+}
+
+function criaNovaAutomacao(){
+    telaCadastro = `
+    <div style='padding: 2rem;'>
+        <hr>
+        <p class='text-info'>Registro de nova automação</p>
+        <hr>
+        <div class="row mb-1">
+            <div class="col-3">
+                Nome de Automação:
+            </div>
+            <div class="col-3">
+                <input type="text" id="make-nome" style="width: 100%;" placeholder="Nome, sem espaços"/>
+            </div>
+        </div>
+        <div class="row mb-1">
+            <div class="col-3">
+                Título de Automação:
+            </div>
+            <div class="col-3">
+                <input type="text" id="make-titulo" style="width: 100%;"/>
+            </div>
+        </div>
+        <div class="row mb-1">
+            <div class="col-3">
+                Descrição:
+            </div>
+            <div class="col-3">
+            <input type="text" id="make-desc" style="width: 100%;"/>
+            </div>
+        </div>
+        <div class="row mb-1">
+            <div class="col-3">
+            </div>
+            <div class="col-3">
+                <button class="btn btn-dark" style="width: 100%;" onClick='salvaNovaAutomacao()'>Salvar</button>
+            </div>
+        </div>
+        <div class="row mb-1">
+            <div class="col-3">
+            </div>
+            <div class="col-3">
+                <p id="msg-resultado"></p>
+            </div>
+        </div>
+    </div>
+    `
+    $('#telaEmulador').html('')
+    $('#telaEmulador').html(telaCadastro)
+}
+
+function salvaNovaAutomacao(){
+    nome = document.getElementById('make-nome').value
+    titulo = document.getElementById('make-titulo').value
+    desc = document.getElementById('make-desc').value
     
-    
+    dados = {nome: nome, titulo: titulo, desc: desc}
+
+    data = JSON.stringify(dados)
+
+    $.ajax({
+        method: 'post',
+        url: '/api/cli/make/automacao',
+        data: data,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function(response) {
+            console.log(response);
+            msgResultado = `<i class="fa-regular fa-circle-check"></i> Serviço criado com sucesso!`
+            $resultado = document.getElementById('msg-resultado')
+            $resultado.classList.add('text-success')
+            $resultado.innerHTML = msgResultado
+
+            setInterval(() => {
+                window.location.reload()
+            }, 2000);
+        },
+        error: function(error) {
+            msgResultado = error.responseText
+            msgResultado = `<i class="fa-regular fa-circle-check"></i> Serviço deletado com sucesso!`
+            $resultado = document.getElementById('msg-resultado')
+            $resultado.classList.add('text-danger')
+            $resultado.innerHTML(msgResultado)
+            console.error("Erro ao enviar AJAX: ", error);
+        }
+    });
 }

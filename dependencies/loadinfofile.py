@@ -11,6 +11,7 @@ def getMacroInfo(path):
     iTitle = 0
     iDesc = 0
     iRoute = 0
+    iMethod = 0
 
     counter = 0
     arrLinhas = []
@@ -26,6 +27,8 @@ def getMacroInfo(path):
                 iDesc = counter
             if (linha.find('# Rota View') >= 0):
                 iRoute = counter
+            if (linha.find('# Método') >= 0):
+                iMethod = counter
             counter = counter + 1
     
     return {
@@ -33,6 +36,7 @@ def getMacroInfo(path):
         'title' : arrLinhas[iTitle+1],
         'desc' : arrLinhas[iDesc+1],
         'route' : arrLinhas[iRoute+1].replace('- ',''),
+        'method' : arrLinhas[iMethod+1].replace('- ',''),
         'readme' : readme_path,
         'filepath': path + '\\index.py'
     }

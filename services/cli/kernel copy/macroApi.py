@@ -1,14 +1,13 @@
 import os
 import sys
 
-import services.cli.kernel.filesystem as filesystem
-import services.cli.kernel.mirrors.mirrorMacroApi as mirrorMacroApi
-from services.config import server_settings
+import kernel.filesystem as filesystem
+import kernel.mirrors.mirrorMacroApi as mirrorMacroApi
 
-# diretorio_atual = os.path.dirname(__file__)
-# diretorio_pai = os.path.abspath(os.path.join(diretorio_atual, '..', '..', '..'))
-# sys.path.append(diretorio_pai)
-# from services.config import server_settings
+diretorio_atual = os.path.dirname(__file__)
+diretorio_pai = os.path.abspath(os.path.join(diretorio_atual, '..', '..', '..'))
+sys.path.append(diretorio_pai)
+from services.config import server_settings
 
 class MacroApi:
     def __init__(self):

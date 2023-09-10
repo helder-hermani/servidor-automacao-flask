@@ -1,8 +1,8 @@
 import os
 import sys
 
-import services.cli.kernel.filesystem as filesystem
-import services.cli.kernel.mirrors.mirrorAutomacao as mirrorAutomacao
+import kernel.filesystem as filesystem
+import kernel.mirrors.mirrorAutomacao as mirrorAutomacao
 
 diretorio_atual = os.path.dirname(__file__)
 diretorio_pai = os.path.abspath(os.path.join(diretorio_atual, '..', '..', '..'))

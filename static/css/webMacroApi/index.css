@@ -19,8 +19,15 @@ pre {
     width: 100%;
 }
 
-span{
+/* span{
     font-size: .8rem;
+} */
+
+.div-novo-servico{
+    width: 100%;
+    display: flex;
+    justify-content: end;
+    margin-top: 2rem;
 }
 
 .frame-request{
@@ -89,3 +96,11 @@ span{
     background-color: black;
     /* border-radius: 2px; */
 }
+
+.tabela-datatable{
+    margin: 2rem 0;
+}
+
+/* .collapse{
+    margin-bottom: 2rem;
+} */

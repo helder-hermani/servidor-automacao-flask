@@ -7,6 +7,8 @@ import services.tracker as Tracker
 import controllers.Login.login as Login
 import controllers.Emulador.emulador as Emulador
 import controllers.Servers.ping as Ping
+import controllers.Cli.macroApi as CliMacroApi
+import controllers.Cli.macroAutomacao as CliMacroAutomacao
 
 group_api = Blueprint('api',__name__)
 
@@ -105,17 +107,23 @@ def api(app):
         except Exception as err:
             return f'Erro na execução. {str(err)}',500
         
-    # @group_api.post('/emulador/upload_excel')
-    # def emulador_upload_excel():
-    #     try:
-    #         if ('file' not in request.files):
-    #             return jsonify({'error': 'Nenhum arquivo enviado'})
-
-    #         file = request.files['file']
-
-    #         df = pd.read_excel(file)
-    #         print(df)
-
-    #         return jsonify({'status': 'Arquivo Excel recebido e processado com sucesso'})
-    #     except Exception as err:
-    #         return f'Erro na execução. {str(err)}',500
+    @group_api.post('/cli/make/macroApi')
+    def cli_make_macro_api():
+        try:
+            return CliMacroApi.make(request)
+        except Exception as err:
+            return f'Erro na execução. {str(err)}',500
+        
+    @group_api.post('/cli/delete/macroApi')
+    def cli_delete_macro_api():
+        try:
+            return CliMacroApi.delete(request)
+        except Exception as err:
+            return f'Erro na execução. {str(err)}',500
+        
+    @group_api.post('/cli/make/automacao')
+    def cli_make_automacao_api():
+        try:
+            return CliMacroAutomacao.make(request)
+        except Exception as err:
+            return f'Erro na execução. {str(err)}',500

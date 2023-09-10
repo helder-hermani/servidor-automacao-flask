@@ -16,6 +16,7 @@
                     </select>
                 </label>
                 <button id="btn-btnRefreshMacro" onclick="refreshMacrosExecucao()" title="Atualiza macros em execução"><i class="fa-solid fa-arrows-rotate"></i></i></button>
+                <button id="btn-info" onclick="criaNovaAutomacao()" title="Criar nova automação"><i class="fa-solid fa-plus text-primary"></i></button>
                 {# <button id="btn-btnViewRecuperaMacro" onclick="recuperaMacro()" title="Visualiza Status da Macro" disabled><i class="fa-solid fa-eye text-blue"></i></i></button> #}
                 <input type="hidden" id="recupera-macro-id" />
             </div>
@@ -30,10 +31,10 @@
                 </label>
             </div>
             <div class="botoes">
-                <button id="btn-info" onclick="showMacroInfo()" disabled><i class="fa-solid fa-circle-info text-primary"></i></button>
-                <button id="btn-play" onclick="playMacro()" disabled><i class="fa-solid fa-play text-success"></i></button>
-                <button id="btn-pause" onclick="pauseMacro()" disabled><i class="fa-solid fa-pause text-dark"></i></button>
-                <button id="btn-stop" onclick="stopMacro()" disabled><i class="fa-solid fa-stop text-danger"></i></button>
+                <button id="btn-info" onclick="showMacroInfo()" disabled title="Informações da automação"><i class="fa-solid fa-circle-info text-primary"></i></button>
+                <button id="btn-play" onclick="playMacro()" disabled title="Iniciar execução"><i class="fa-solid fa-play text-success"></i></button>
+                <button id="btn-pause" onclick="pauseMacro()" disabled title="Pausar execução"><i class="fa-solid fa-pause text-dark"></i></button>
+                <button id="btn-stop" onclick="stopMacro()" disabled title="Interromper execução"><i class="fa-solid fa-stop text-danger"></i></button>
                 <button id="btn-reqInfo" onclick="showPropriedades()" title="Propriedades" disabled><i class="fa-brands fa-product-hunt text-info"></i></button>
                 <button id="btn-erase" onclick="limpaTela()" title="'Limpa tela"><i class="fa-solid fa-eraser"></i></button>
                 {# <button id="btn-erase" onclick="pegaPropriedades()" title="'Recupera Requisição"><i class="fa-solid fa-check"></i></button> #}
