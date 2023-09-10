@@ -1,0 +1,40 @@
+<!-- -*- coding: utf-8 -*- -->
+
+##### Nome
+-->nome<--
+<br>
+
+##### Titulo
+-->titulo<--
+<br>
+
+##### Descrição
+-->desc<--
+<br>
+
+##### Instruções
+Informe os parâmteros da requisição. Nesta aplicação standard, o retorno sera um JSON com status de sucesso ou erro.
+<br>
+
+##### Bibliotecas de Terceiros
+- Nenhuma
+<br>
+
+##### Entidades Banco de Dados
+- Nenhuma
+<br>
+
+##### Rota View (apenas para esta documentação)
+- /web/macroapi/viewMacro
+<br>
+
+##### Rota API
+- -->rotaApi<--
+<br>
+
+##### Método Http
+- -->metodo<--
+<br>
+
+##### Parâmetros
+-->parametros<--

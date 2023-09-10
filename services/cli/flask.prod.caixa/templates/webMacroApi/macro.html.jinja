@@ -1,0 +1,162 @@
+{% extends "base.html.jinja" %}
+{% block head %}
+    {{ super() }}
+{% endblock %}
+
+{% block content_left %}
+{% endblock %}
+
+{% block content_right %}
+    <div class="content">
+        <h5>Arquivo:</h5>
+        <p>{{filepath}}</p>
+        <hr>
+        <div>{{ info|safe }}</div>
+        <hr>
+        <h5>Teste de Execução:</h5>
+        <div class="frame-request">
+            <form method="{{infoRequest['metodo']}}" action="{{rotaApi}}" id="form-request">
+                <div class="form-request">
+                    {% for param in infoRequest['params']%}
+                        <div>{{param}}:</div>
+                        <div><input type="{{ 'password' if param == 'password' else 'text'}}" name="{{param}}"/></div>
+                        {# <div><input type="text" name="{{param}}"/></div> #}
+                    {%endfor%}
+                    <div></div>
+                    <div class="div-btn-request">
+                        <button type="submit" class="btn btn-success">
+                            Executar
+                        </button>
+                        <div id="spinner-request" class="spinner-border text-info d-none" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <div id="frame-retorno" class="frame-retorno my-3"></div>
+        </div>
+        <hr>
+        <h5>Snippets</h5>
+        <ul class="nav nav-tabs bg-white" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="html-tab" data-bs-toggle="tab" data-bs-target="#html" type="button" role="tab" aria-controls="html" aria-selected="true">HTML</button>
+            </li>
+            <li class="nav-item bg-white" role="presentation">
+                <button class="nav-link" id="css-tab" data-bs-toggle="tab" data-bs-target="#css" type="button" role="tab" aria-controls="css" aria-selected="false">CSS</button>
+            </li>
+            <li class="nav-item bg-white" role="presentation">
+                <button class="nav-link" id="js-tab" data-bs-toggle="tab" data-bs-target="#js" type="button" role="tab" aria-controls="js" aria-selected="false">JS</button>
+            </li>
+            <li class="nav-item bg-white" role="presentation">
+                <button class="nav-link" id="controller-tab" data-bs-toggle="tab" data-bs-target="#controller" type="button" role="tab" aria-controls="controller" aria-selected="false">Laravel</button>
+            </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="html" role="tabpanel" aria-labelledby="html-tab">
+                <div class="div-snippet">
+                    <button id="snippetHtml-copiar" class="btn-copy-snippet" onClick="copyToClipboard(event, 'snippet-html')">Copiar código HTML</button>
+                    <pre>       <code id="snippet-html">{{ htmlSnippet }}</code></pre>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="css" role="tabpanel" aria-labelledby="css-tab">
+                <div class="div-snippet">
+                    <button id="snippetcss-copiar" class="btn-copy-snippet" onClick="copyToClipboard(event, 'snippet-css')">Copiar código CSS</button>
+                    <pre>       <code id="snippet-css">{{ cssSnippet }}</code></pre>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="js" role="tabpanel" aria-labelledby="js-tab">
+                <div class="div-snippet">
+                    <button id="snippetjs-copiar" class="btn-copy-snippet" onClick="copyToClipboard(event, 'snippet-js')">Copiar código JS</button>
+                    <pre>       <code id="snippet-js">{{ jsSnippet }}</code></pre>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="controller" role="tabpanel" aria-labelledby="controller-tab">
+                <div class="div-snippet">
+                    <h6>Arquivo portal/routes/api.php</h6>
+                    <button id="snippetcontroller-copiar" class="btn-copy-snippet" onClick="copyToClipboard(event, 'snippet-rotaLaravel')">Copiar Rota Laravel</button>
+                    <pre>       <code id="snippet-rotaLaravel">{{ rotaLaravelSnippet }}</code></pre>
+                </div>
+                <div class="div-snippet">
+                    <h6>Arquivo portal/app/Http/Controllers/ServidorApp/{{infoRequest['nome']}}.php</h6>
+                    <button id="snippetcontroller-copiar" class="btn-copy-snippet" onClick="copyToClipboard(event, 'snippet-controller')">Copiar código Controller</button>
+                    <pre>       <code id="snippet-controller">{{ controllerSnippet }}</code></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="{{url_for('static', filename='css/webMacroApi/index.css')}}">
+{% endblock %}
+
+{% block js %}
+    <script>
+        $(document).ready(function() {
+            $("#form-request").submit(function(event) {
+                event.preventDefault();
+
+                $('#spinner-request').removeClass('d-none')
+
+                var formData = {};
+
+                $(this).serializeArray().forEach(function(item){
+                    formData[item.name] = item.value;
+                });
+
+                {# const data = formData; #}
+                {# const data = JSON.stringify(formData); #}
+
+                const method_req = $("#form-request").attr("method")
+
+                var data = null;
+                if (method_req.toUpperCase() == 'POST'){
+                    data = JSON.stringify(formData)
+                }else{
+                    data = formData
+                }
+                
+                console.log(data)
+
+                $('#frame-retorno').html("")
+
+                $.ajax({
+                    method: method_req,
+                    {# method: $("#form-request").attr("method"), #}
+                    url: $("#form-request").attr("action"),
+                    data: data,
+                    {# data: {parametros: data}, #}
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function(response) {
+                        console.log(response);
+                        $('#frame-retorno').html(JSON.stringify(response))
+                        $('#spinner-request').addClass('d-none')
+                    },
+                    error: function(error) {
+                        $('#frame-retorno').html(`<p class='text-danger'>Erro na requisição: ", ${error.responseText}</p>`)
+                        $('#spinner-request').addClass('d-none')
+                        console.error("Erro ao enviar AJAX: ", error);
+                    }
+                });
+            });
+        });
+
+        function copyToClipboard(event, idConteudo) {
+            const conteudoDiv = document.getElementById(idConteudo);
+            const range = document.createRange();
+            range.selectNodeContents(conteudoDiv);
+            const selecao = window.getSelection();
+            selecao.removeAllRanges();
+            selecao.addRange(range);
+            document.execCommand("copy");
+            document.getSelection().removeAllRanges();
+            {# alert("Conteúdo copiado para a área de transferência!"); #}
+            var currentBtn = event.currentTarget
+            var previousText = currentBtn.innerText;
+            currentBtn.innerText = 'Copiado!';
+            setTimeout(()=>currentBtn.innerText=previousText,1000)
+        };
+    </script>
+
+{% endblock %}

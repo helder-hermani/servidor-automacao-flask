@@ -1,0 +1,15 @@
+# -*- coding: utf-8 -*-
+import os
+from time import sleep
+
+from dependencies.loadinfofile import loadInfo
+
+readme = f'{os.path.dirname(os.path.abspath(__file__))}/readme.md'
+
+def info():
+    loadInfo(readme)
+
+def index(request):
+    -->parametros<--
+    -->resultado<--
+    return resultado

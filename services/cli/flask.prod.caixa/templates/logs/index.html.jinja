@@ -1,0 +1,55 @@
+{% extends "base.html.jinja" %}
+{% block head %}
+    {{ super() }}
+{% endblock %}
+
+{% block content_left %}{% endblock %}
+
+{% block content_right %}
+    <div class="main">
+        <h3>Registros de Automações</h3>
+        <div class="tabela-logs">
+            <table id="data_table">
+                <thead>
+                    <tr>
+                        {# {% for column in df_req.columns %}
+                            <th>{{ column }}</th>
+                        {% endfor %} #}
+                        <th>Servidor</th>
+                        <th>Id Req</th>
+                        <th>Processo</th>
+                        <th>Proprietário</th>
+                        <th>Usuário</th>
+                        <th>Log</th>
+                        <th>Hora</th>
+                        <th>Mensagens</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for index, row in df_req.iterrows() %}
+                        <tr>
+                                <td>{{ row['server'] }}</td>
+                                <td>{{ row['id'] }}</td>
+                                <td>{{ row['Nome Processo'] }}</td>
+                                <td>{{ row['Proprietário'] }}</td>
+                                <td>{{ row['Último uuário'] }}</td>
+                                <td>{{ row['Mensagem'] }}</td>
+                                <td>{{ row['Hora'] }}</td>
+                                <td class="text-center"><a href="/logs/download/mensagens/{{ row['id'] }}"><i class="fa-solid fa-download"></i></a></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="{{url_for('static', filename='css/logs/index.css')}}">
+{% endblock %}
+
+{% block js %}
+    <script>
+        _datatableSoExcel('data_table', 0, 'desc', 'Relação de log automações', 10)
+    </script>
+{% endblock %}

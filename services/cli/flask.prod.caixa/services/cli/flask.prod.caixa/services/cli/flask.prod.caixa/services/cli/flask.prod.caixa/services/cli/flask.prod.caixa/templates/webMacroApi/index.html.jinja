@@ -1,0 +1,174 @@
+{% extends "base.html.jinja" %}
+{% block head %}
+    {{ super() }}
+{% endblock %}
+
+{% block content_left %}
+{% endblock %}
+
+{% block content_right %}
+    <div class="main">
+        <h3>Macros API</h3>
+        <div id="accordion">
+            <div class="card">
+                <div class="card-header" id="headingTwo">
+                    <h5 class="mb-0">
+                        <button class="btn btn-link" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                            <i class="fa-solid fa-plus"></i>
+                            Adicionar Novo Serviço
+                        </button>
+                    </h5>
+                </div>
+                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                    <form id="form-request" method="post" action="/api/cli/make/macroApi">
+                        <div class="card-body">
+                            <div class="row mb-1">
+                                <div class="col-3">
+                                    Nome de Aplicação:
+                                </div>
+                                <div class="col-3">
+                                    <input type="nome" name="nome" style="width: 100%;" placeholder="Nome, sem espaços"/>
+                                </div>
+                                <div class="col-6"></div>
+                            </div>
+                            <div class="row mb-1">
+                                <div class="col-3">
+                                    Título da Aplicação:
+                                </div>
+                                <div class="col-3">
+                                    <input type="titulo" name="titulo" style="width: 100%;"/>
+                                </div>
+                                <div class="col-6"></div>
+                            </div>
+                            <div class="row mb-1">
+                                <div class="col-3">
+                                    Descrição:
+                                </div>
+                                <div class="col-3">
+                                    <input type="desc" name="desc" style="width: 100%;"/>
+                                </div>
+                                <div class="col-6"></div>
+                            </div>
+                            <div class="row mb-1">
+                                <div class="col-3">
+                                    Método da Requisição:
+                                </div>
+                                <div class="col-3">
+                                    <input type="metodo" name="metodo" style="width: 100%;" placeholder="get ou post"/>
+                                </div>
+                                <div class="col-6"></div>
+                            </div>
+                            <div class="row mb-1">
+                                <div class="col-3">
+                                    Argumentos:
+                                </div>
+                                <div class="col-3">
+                                    <input type="args" name="args" style="width: 100%;" placeholder="Separados por vírgulas"/>
+                                </div>
+                                <div class="col-6">
+                                </div>
+                            </div>
+                            <div class="row mb-1">
+                                <div class="col-3">
+                                </div>
+                                <div class="col-3">
+                                    <button type="submit" class="btn btn-dark" style="width: 100%;">Salvar</button>
+                                </div>
+                                <div class="col-6"></div>
+                            </div>
+                            <div class="row mb-1">
+                                <div class="col-3">
+                                </div>
+                                <div class="col-3 text-center">
+                                    <p id="msg-resultado-salvar"></p>
+                                </div>
+                                <div class="col-6"></div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header" id="headingOne">
+                    <h5 class="mb-0">
+                        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            <i class="fa-solid fa-rss"></i>
+                            Macros Registradas
+                        </button>
+                    </h5>
+                </div>
+
+                <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+                    <div class="card-body">
+                        <table id='table-macros-api' class="table table-bordered">
+                            <thead>
+                                <tr>
+                                <th scope="col"><span>Nome</span></th>
+                                <th scope="col"><span>Título</span></th>
+                                <th scope="col"><span>Descrição</span></th>
+                                <th scope="col"><span>Método</span></th>
+                                <th scope="col"><span></span></th>
+                                <th scope="col"><span></span></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {%for macro in lista_macros%}
+                                    <tr>
+                                        <td><span>{{macro['name']}}</span></td>
+                                        <td><span>{{macro['title']}}</span></td>
+                                        <td><span>{{macro['desc']}}</span></td>
+                                        <td><span>{{macro['method']}}</span></td>
+                                        <form method="GET" action="{{macro['route']}}">
+                                            <input type="hidden" name="readme" value="{{macro['readme']}}" />
+                                            <input type="hidden" name="filepath" value="{{macro['filepath']}}" />
+                                            <td><button class="btn btn-ligth"><i class="fa-solid fa-circle-info text-primary"></i></button></td>
+                                        </form>
+                                        <td><button class="btn btn-ligth" onClick="deletaServico('{{macro['name']}}','{{macro['method']}}')" data-toggle="modal" data-target="#exampleModalCenter"><i class="fa-regular fa-trash-can text-dark"></i></button></td>
+                                    </tr>
+                                {%endfor%}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Exclusão de Macro Api</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Confirma a exclusão da macro <span id="delete-nome"></span>?</p>
+                    <p>Este processo é irreversível.</p>
+                    <input type="hidden" id="delete-metodo" />
+                    <div id="resultado-delete"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-danger" onclick="confirmaExclusao()">Excluir</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="{{url_for('static', filename='css/webMacroApi/index.css')}}">
+{% endblock %}
+
+{% block js %}
+    <script src="{{url_for('static', filename='js/webMacroApi/index.js')}}"></script>
+        <script>
+        _datatable('table-macros-api', 0, 'desc', 10)
+    </script>
+{% endblock %}
+
+
