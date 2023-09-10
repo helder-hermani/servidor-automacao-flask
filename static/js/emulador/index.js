@@ -92,6 +92,9 @@ function recuperaMacroNovo(event){
 
 function selecionaNovaMacro(event){
     $('#frameInfo').removeClass('frameInfo-show')
+    $('#frameLinkExterno').removeClass('frameInfo-show')
+    $('#framePropriedades').removeClass('frameInfo-show')
+    
     select = event.currentTarget
     $("#currentMacroName").val(select.value)
 

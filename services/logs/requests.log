@@ -47,3 +47,5 @@ http://192.168.0.216:70;QN50T6;minhaApp1;MASTER;MASTER;Macro Iniciada;10/09/2023
 http://192.168.0.216:70;QN50T6;minhaApp1;MASTER;MASTER;Execução interrompida por solicitação do usuário.;10/09/2023 15:21:44
 http://192.168.0.216:70;1GEIFC;minhaApp1;MASTER;MASTER;Macro Iniciada;10/09/2023 15:40:07
 http://192.168.0.216:70;1GEIFC;minhaApp1;MASTER;MASTER;Macro Finalizada;10/09/2023 15:41:56
+http://192.168.0.216:70;1GAFLO;novaMacroWeb;MASTER;MASTER;Macro Iniciada;10/09/2023 15:45:42
+http://192.168.0.216:70;1GAFLO;novaMacroWeb;MASTER;MASTER;Tempo excedido de espera. Macro encerrada.;10/09/2023 15:46:45
