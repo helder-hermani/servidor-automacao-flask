@@ -9,6 +9,7 @@ import controllers.Emulador.emulador as Emulador
 import controllers.Servers.ping as Ping
 import controllers.Cli.macroApi as CliMacroApi
 import controllers.Cli.macroAutomacao as CliMacroAutomacao
+import controllers.Deploy.index as Deploy
 
 group_api = Blueprint('api',__name__)
 
@@ -132,5 +133,19 @@ def api(app):
     def cli_delete_automacao_api():
         try:
             return CliMacroAutomacao.delete(request)
+        except Exception as err:
+            return f'Erro na execução. {str(err)}',500
+        
+    @group_api.get('/deploy/backup/<servidor_destino>')
+    def cli_deploy_backup(servidor_destino):
+        try:
+            return jsonify(Deploy.makeBackup(servidor_destino)), 200
+        except Exception as err:
+            return f'Erro na execução. {str(err)}',500
+        
+    @group_api.get('/deploy/transferencia/<servidor_destino>/<use_ignore>')
+    def cli_deploy_transferencia(servidor_destino, use_ignore):
+        try:
+            return jsonify(Deploy.makeDeploy(servidor_destino, use_ignore)), 200
         except Exception as err:
             return f'Erro na execução. {str(err)}',500

@@ -1,0 +1,88 @@
+{% extends "base.html.jinja" %}
+{% block head %}
+    {{ super() }}
+{% endblock %}
+
+{% block content_left %}{% endblock %}
+
+{% block content_right %}
+    <div class="main">
+        <h3>Servidor de Automações - CEPAT</h3>
+        <h5>Deploy</h5>
+        <div class="deploy-content">
+            <div class="frames">
+                <div class="disabled-cover d-none" id="disabled-cover"></div>
+                <div>Servidor Atual:</div>
+                <div><input id="servidor-atual" value="{{servidor_atual}}" disabled style="width: 100%;"/></div>
+                <div>Servidor para Deploy:</div>
+                <div>
+                    <select id="servidor-destino" style="width: 100%;" onchange="enableDeploy()">
+                        <option value="" disabled selected></option>
+                        {% for servidor in servers%}
+                            <option value="{{ servidor }}">{{ servidor }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div></div>
+                <div>
+                    <label for="deploy-ignore" style="cursor: pointer;">
+                    <input type="checkbox" disabled checked id="deploy-ignore" class="btn btn-primary" data-bs-toggle="collapse" data-bs-target="#conteudoColapsavel">
+                        Utilizar <strong>deployignore</strong>
+                    </label>
+                    <div id="conteudoColapsavel" class="collapse show">
+                        <code><pre class="div-ignore">{{ignore_file}}</pre></code>
+                    </div>
+                    <div>
+                        <span>Não serão transferidos:</span>
+                        <code><pre class="div-ignore">__pycache__
+    .git
+    .env
+    static\app\logs\history
+    services\logs\requests.log</pre></code>
+                            
+                    </div>
+                </div>
+                <div></div>
+                <div style="text-align: center;">
+                    <button id="btn-inicia-backup" class="btn btn-success" onclick="iniciaDeploy()" disabled>Iniciar Deploy</button>
+                </div>
+            </div>
+            <div class="frame-retorno">
+                <p style="width: 100%; text-align: center;"><strong>Iniciando Deploy</strong></p>
+                {# <div class="frames frames-etpas-deploy"> #}
+                <div>
+                    <div class="row py-2 d-none" id="linha-backup">
+                        <div class="col-10">
+                            Realizando backup do servidor <span id='nome-servidor-destino-backup'>prod</span>
+                        </div>
+                        <div class="col-2">
+                            {# <div class="spinner-border" role="status">
+                                <span class="sr-only">Loading...</span>
+                            </div> #}
+                        </div>
+                    </div>
+                    <div class="row py-2 d-none" id="linha-transf">
+                        <div class="col-10">
+                            Iniciando transferência para <span id='nome-servidor-destino-transferencia'>prod</span>
+                        </div>
+                        <div class="col-2">
+                            {# <div class="spinner-border" role="status">
+                                <span class="sr-only">Loading...</span>
+                            </div> #}
+                        </div>
+                    </div>
+                <div class="resultado-deploy">
+                    <p id="txt-resultado-deploy"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="{{url_for('static', filename='css/deploy/index.css')}}">
+{% endblock %}
+
+{% block js %}
+    <script src="{{url_for('static', filename='js/deploy/index.js')}}"></script>
+{% endblock %}

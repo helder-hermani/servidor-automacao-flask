@@ -8,6 +8,7 @@ import controllers.Emulador.externo as emuladorexterno
 import controllers.Servers.index as servers
 import controllers.Logs.index as Logs
 import controllers.Logs.downloadMensagens as LogDownload
+import controllers.Deploy.index as Deploy
 
 def web(app):
     @app.route("/")
@@ -31,6 +32,10 @@ def web(app):
     @app.get('/emulador/externo/<macroName>/<user>')
     def web_emulador_externo(macroName, user):
         return emuladorexterno.showEmuladorExterno(macroName, user)
+    
+    @app.get('/deploy')
+    def web_deploy():
+        return Deploy.show()
     
     @app.get('/web/macrosapi')
     def web_macrosapi():

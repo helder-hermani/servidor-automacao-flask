@@ -1,0 +1,48 @@
+.main{
+    padding: 2rem;
+}
+
+.deploy-content{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+}
+
+.frames{
+    display: grid;
+    width: 100%;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin: 1rem 0;
+    background-color: rgba(255, 255, 255, .5);
+    padding: 1rem;
+    position: relative;
+}
+
+.div-ignore{
+    border: solid 1px rgba(0, 0, 0, .5);
+    padding: .5rem;
+    background-color: rgba(0, 0, 0, .1);
+}
+
+.frame-retorno{
+    border: solid 1px rgba(0, 0, 0, .1);
+    border-radius: 3px;
+    padding: 1rem;
+}
+
+.disabled-cover{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, .8);
+}
+
+
+.resultado-deploy{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 2rem 0;
+}

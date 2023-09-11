@@ -72,14 +72,21 @@ class Deploy:
     def make_backup(self,servidor_destino):
         diretorio_backup = f'{self.root}/deploybackup'
         shutil.rmtree(diretorio_backup)
+        servidor_destino = f'{self.root}\{servidor_destino}'
         shutil.copytree(servidor_destino, diretorio_backup)
+        os.remove(f'{diretorio_backup}/.env')
 
-    
-    def make_deploy(self, servidor_destino):
+    def getDeployIgnore(self):
+        with open(f'{self.diretorio_atual}/.deployignore', 'r') as file_ignore:
+            conteudo = file_ignore.read()
+            return conteudo
+            
+            
+    def make_deploy(self, servidor_destino, use_ignore=True):
         schema = self.listar_arquivos_e_pastas(self.root_current)
-
         lista_ignore = []
-        with open('.deployignore', 'r') as file_ignore:
+        with open(f'{self.diretorio_atual}/.deployignore', 'r') as file_ignore:
+        # with open('.deployignore', 'r') as file_ignore:
             ignore_file_content = file_ignore.readlines()
             for linha in ignore_file_content:
                 ignore = linha.strip()
@@ -87,7 +94,11 @@ class Deploy:
                 lista_ignore.append(path)
 
         for item in schema:
-            deploy = self.deploy_arquivo(item,lista_ignore)
+            if (use_ignore):
+                deploy = self.deploy_arquivo(item,lista_ignore)
+            else:
+                deploy = True
+
             if (deploy):
                 item_formatado = item.replace('\\\\','\\')
                 root_current_formatado = self.root_current.replace('\\','\\\\')
@@ -100,6 +111,6 @@ class Deploy:
 
 # -----------------------------------------------
 
-appDeploy = Deploy()
-appDeploy.make_backup('flask.prod.caixa')
-appDeploy.make_deploy('flask.prod.caixa')
+# appDeploy = Deploy()
+# # appDeploy.make_backup('flask.prod.caixa')
+# appDeploy.make_deploy('flask.prod.caixa',False)

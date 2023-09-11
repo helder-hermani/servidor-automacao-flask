@@ -1,4 +1,0 @@
-// Pausa
-// Abortar
-// Responder
-// Consultar
